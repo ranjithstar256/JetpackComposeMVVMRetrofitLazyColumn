@@ -12,10 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JetpackComposeMVVMRetrofitAndRecyclerview">
         <activity
+            android:name=".DisplayNews"
+            android:exported="false"
+            android:label="@string/title_activity_display_news"
+            android:theme="@style/Theme.JetpackComposeMVVMRetrofitAndRecyclerview" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.JetpackComposeMVVMRetrofitAndRecyclerview.NoActionBar">
+            android:theme="@style/Theme.JetpackComposeMVVMRetrofitAndRecyclerview">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

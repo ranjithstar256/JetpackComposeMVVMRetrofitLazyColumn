@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">JetpackComposeMVVMRetrofitAndRecyclerview</string>
+    <string name="app_name">JetNews</string>
+    <string name="title_activity_display_news">DisplayNews</string>
 </resources>
