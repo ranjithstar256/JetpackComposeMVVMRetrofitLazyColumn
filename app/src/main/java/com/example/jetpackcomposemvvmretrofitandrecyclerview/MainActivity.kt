@@ -39,7 +39,17 @@ import coil.compose.rememberImagePainter
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
 import com.example.example.Articles
+import com.example.example.Hero
 import com.example.jetpackcomposemvvmretrofitandrecyclerview.ui.theme.JetpackComposeMVVMRetrofitAndRecyclerviewTheme
+
+// json
+// API
+// server
+// web service
+// retrofit library in jetpack compose
+// get to get a simple source code that gets data from
+// API and display it in Android app.
+
 
 class MainActivity : ComponentActivity() {
     val mainViewModel by viewModels<MainViewModel>()
@@ -53,9 +63,9 @@ class MainActivity : ComponentActivity() {
 
 
                         Text(text = "Latest NEWS", fontSize = 32.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
-
-                        MovieList(applicationContext, movieList = mainViewModel.movieListResponse)
                         mainViewModel.getMovieList()
+                       MovieList(applicationContext,
+                           mainViewModel.movieListResponse)
                     }
                 }
             }
@@ -64,7 +74,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MovieList(context: Context,movieList: List<Articles>) {
+fun MovieList(context: Context,movieList: List<Hero>) {
     var selectedIndex by remember { mutableStateOf(-1) }
     LazyColumn {
 
@@ -80,13 +90,13 @@ fun MovieList(context: Context,movieList: List<Articles>) {
 
 @Composable
 fun MovieItem(context: Context) {
-    val movie = Articles(
+    val movie = Hero(
         "Coco",
         "",
        " articl"
     )
 
-    
+
     MovieItem(context,movie = movie, 0, 0) { i ->
         Log.i("wertytest123abc", "MovieItem: "
                 +i)
@@ -94,11 +104,12 @@ fun MovieItem(context: Context) {
 }
 
 @Composable
-fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
+fun MovieItem(context: Context,movie: Hero, index: Int, selectedIndex: Int,
               onClick: (Int) -> Unit)
 {
 
-    val backgroundColor = if (index == selectedIndex) MaterialTheme.colors.primary else MaterialTheme.colors.background
+    val backgroundColor = if (index == selectedIndex) MaterialTheme.colors.primary
+    else MaterialTheme.colors.background
 
     Card(
         modifier = Modifier
@@ -122,14 +133,14 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
              {
                 Image(
                     painter = rememberImagePainter(
-                        data = movie.urlToImage,
+                        data = movie.imageurl,
                         builder = {
                             scale(Scale.FILL)
                             placeholder(R.drawable.placeholder)
                             transformations(CircleCropTransformation())
                         }
                     ),
-                    contentDescription = movie.description,
+                    contentDescription = movie.bio,
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(0.3f)
@@ -146,24 +157,24 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
                         .padding(20.dp)
                         .selectable(true, true, null,
                             onClick = {
-                                Log.i("test123abc", "MovieItem: $index/n${movie.description}")
+                                Log.i("test123abc", "MovieItem: $index/n${movie.bio}")
                                 context.startActivity(
                                     Intent(context, DisplayNews::class.java)
                                         .setFlags(FLAG_ACTIVITY_NEW_TASK)
-                                        .putExtra("desk", movie.description.toString())
-                                        .putExtra("urlToImage", movie.urlToImage)
-                                        .putExtra("title", movie.title)
+                                        .putExtra("desk", movie.bio.toString())
+                                        .putExtra("urlToImage", movie.imageurl)
+                                        .putExtra("title", movie.realname)
                                 )
                             })
                 ) {
 
                     Text(
-                        text = movie.title.toString(),
+                        text = movie.realname.toString(),
                         style = MaterialTheme.typography.subtitle1,
                         fontWeight = FontWeight.Bold
                     )
 
-                    HtmlText(html = movie.description.toString())
+                    HtmlText(html = movie.bio.toString())
                 }
             }
         }
@@ -179,10 +190,6 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
         )
     }
 }
-
-
-
-
 
 /*
 @Composable
