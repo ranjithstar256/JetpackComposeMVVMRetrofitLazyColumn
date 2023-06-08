@@ -13,13 +13,15 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel() {
 
 
-    var movieListResponse:List<Hero> by mutableStateOf(listOf())
+     var movieListResponse :  List<Recipes> by mutableStateOf(listOf())
+   // var movieListResponse:List<Hero> by mutableStateOf(listOf())
+
     var errorMessage: String by mutableStateOf("")
     fun getMovieList() {
         viewModelScope.launch {
             val apiService = ApiService.getInstance()
             try {
-                movieListResponse= apiService.getMovies()
+                movieListResponse= apiService.getMovies().recipes
             }
             catch (e: Exception) {
                 errorMessage = e.message.toString()

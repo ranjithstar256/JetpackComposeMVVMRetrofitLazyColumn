@@ -7,12 +7,12 @@ import retrofit2.http.GET
 
 interface ApiService {
 
-    @GET("marvel")
+    @GET("random?number=30&instructionsRequired=true/apiKey=ab7c4562165841f88f6e00c1529ae6b2")
     //@GET("top-headlines?country=us&category=business&apiKey=684cb893caf7425abeffad82ac1d0f4e")
     ///@GET("search?q=chatgpt")
 
     //https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=684cb893caf7425abeffad82ac1d0f4e
-    suspend fun getMovies() :List<Hero>
+        suspend fun getMovies() :WholeData
 
     companion object {
         var apiService: ApiService? = null
@@ -21,8 +21,10 @@ interface ApiService {
                 apiService = Retrofit.Builder()
                    // .baseUrl("https://howtodoandroid.com/apis/")
                    // .baseUrl("https://newsapi.org/v2/")
-                    .baseUrl("https://simplifiedcoding.net/demos/")
+                  //  .baseUrl("https://simplifiedcoding.net/demos/")
                     //.baseUrl("https://podcast-episodes.p.rapidapi.com/")
+
+                    .baseUrl("https://api.spoonacular.com/recipes/")
 
                     .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ApiService::class.java)

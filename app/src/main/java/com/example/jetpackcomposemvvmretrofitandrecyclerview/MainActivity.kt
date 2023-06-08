@@ -63,9 +63,9 @@ class MainActivity : ComponentActivity() {
 
 
                         Text(text = "Latest NEWS", fontSize = 32.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+
+                       MovieList(applicationContext,mainViewModel.movieListResponse)
                         mainViewModel.getMovieList()
-                       MovieList(applicationContext,
-                           mainViewModel.movieListResponse)
                     }
                 }
             }
@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MovieList(context: Context,movieList: List<Hero>) {
+fun MovieList(context: Context,movieList: List<Recipes>) {
     var selectedIndex by remember { mutableStateOf(-1) }
     LazyColumn {
 
@@ -88,23 +88,10 @@ fun MovieList(context: Context,movieList: List<Hero>) {
 
 }
 
-@Composable
-fun MovieItem(context: Context) {
-    val movie = Hero(
-        "Coco",
-        "",
-       " articl"
-    )
 
-
-    MovieItem(context,movie = movie, 0, 0) { i ->
-        Log.i("wertytest123abc", "MovieItem: "
-                +i)
-    }
-}
 
 @Composable
-fun MovieItem(context: Context,movie: Hero, index: Int, selectedIndex: Int,
+fun MovieItem(context: Context,movie: Recipes, index: Int, selectedIndex: Int,
               onClick: (Int) -> Unit)
 {
 
@@ -133,14 +120,14 @@ fun MovieItem(context: Context,movie: Hero, index: Int, selectedIndex: Int,
              {
                 Image(
                     painter = rememberImagePainter(
-                        data = movie.imageurl,
+                        data = movie.image,
                         builder = {
                             scale(Scale.FILL)
                             placeholder(R.drawable.placeholder)
                             transformations(CircleCropTransformation())
                         }
                     ),
-                    contentDescription = movie.bio,
+                    contentDescription = movie.summary,
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(0.3f)
@@ -157,24 +144,24 @@ fun MovieItem(context: Context,movie: Hero, index: Int, selectedIndex: Int,
                         .padding(20.dp)
                         .selectable(true, true, null,
                             onClick = {
-                                Log.i("test123abc", "MovieItem: $index/n${movie.bio}")
+                                Log.i("test123abc", "MovieItem: $index/n${movie.summary}")
                                 context.startActivity(
                                     Intent(context, DisplayNews::class.java)
                                         .setFlags(FLAG_ACTIVITY_NEW_TASK)
-                                        .putExtra("desk", movie.bio.toString())
-                                        .putExtra("urlToImage", movie.imageurl)
-                                        .putExtra("title", movie.realname)
+                                      //  .putExtra("desk", movie.bio.toString())
+                                    //    .putExtra("urlToImage", movie.imageurl)
+                                     //   .putExtra("title", movie.realname)
                                 )
                             })
                 ) {
 
                     Text(
-                        text = movie.realname.toString(),
+                        text = movie.title.toString(),
                         style = MaterialTheme.typography.subtitle1,
                         fontWeight = FontWeight.Bold
                     )
 
-                    HtmlText(html = movie.bio.toString())
+                    HtmlText(html = movie.summary.toString())
                 }
             }
         }
