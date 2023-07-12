@@ -50,8 +50,6 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column() {
-
-
                         Text(text = "Latest NEWS", fontSize = 32.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
 
                         MovieList(applicationContext, movieList = mainViewModel.movieListResponse)
@@ -67,29 +65,13 @@ class MainActivity : ComponentActivity() {
 fun MovieList(context: Context,movieList: List<Articles>) {
     var selectedIndex by remember { mutableStateOf(-1) }
     LazyColumn {
-
         itemsIndexed(items = movieList) {
                 index, item ->
-            MovieItem(context,movie = item, index, selectedIndex) { i ->
+            MovieItem(context,movie = item, index, selectedIndex)
+            { i ->
                 selectedIndex = i
             }
         }
-    }
-
-}
-
-@Composable
-fun MovieItem(context: Context) {
-    val movie = Articles(
-        "Coco",
-        "",
-       " articl"
-    )
-
-    
-    MovieItem(context,movie = movie, 0, 0) { i ->
-        Log.i("wertytest123abc", "MovieItem: "
-                +i)
     }
 }
 
@@ -97,11 +79,9 @@ fun MovieItem(context: Context) {
 fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
               onClick: (Int) -> Unit)
 {
-
     val backgroundColor = if (index == selectedIndex) MaterialTheme.colors.primary else MaterialTheme.colors.background
 
-    Card(
-        modifier = Modifier
+    Card(modifier = Modifier
             .padding(8.dp, 4.dp)
             .fillMaxSize()
             .selectable(true, true, null,
@@ -109,8 +89,8 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
                     Log.i("test123abc", "MovieItem: $index/n$selectedIndex")
                 })
             .clickable { onClick(index) }
-            .height(180.dp), shape = RoundedCornerShape(8.dp), elevation = 4.dp
-    ) {
+            .height(180.dp), shape = RoundedCornerShape(8.dp), elevation = 4.dp)
+    {
         Surface(color = backgroundColor) {
 
             Row(
@@ -163,12 +143,17 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
                         fontWeight = FontWeight.Bold
                     )
 
-                    HtmlText(html = movie.description.toString())
+               //     HtmlText(html = movie.description.toString())
                 }
             }
         }
     }
-    @Composable
+
+}
+
+/*
+
+/*@Composable
     fun HtmlText(html: String, modifier: Modifier = Modifier) {
         AndroidView(
             modifier = modifier
@@ -177,14 +162,8 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
             factory = { context -> TextView(context) },
             update = { it.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT) }
         )
-    }
-}
+    }*/
 
-
-
-
-
-/*
 @Composable
 fun Content() {
     val context = LocalContext.current
