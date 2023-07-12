@@ -1,16 +1,18 @@
 package com.example.jetpackcomposemvvmretrofitandrecyclerview
 
+import com.example.example.Hero
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiService {
 
-    //@GET("movielist.json")
-    @GET("top-headlines?country=us&category=business&apiKey=684cb893caf7425abeffad82ac1d0f4e")
-  //  @GET("https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=684cb893caf7425abeffad82ac1d0f4e")
+    @GET("marvel")
+    //@GET("top-headlines?country=us&category=business&apiKey=684cb893caf7425abeffad82ac1d0f4e")
     ///@GET("search?q=chatgpt")
-    suspend fun getMovies() :News
+
+    //https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=684cb893caf7425abeffad82ac1d0f4e
+    suspend fun getMovies() :List<Hero>
 
     companion object {
         var apiService: ApiService? = null
@@ -18,7 +20,8 @@ interface ApiService {
             if (apiService == null) {
                 apiService = Retrofit.Builder()
                    // .baseUrl("https://howtodoandroid.com/apis/")
-                    .baseUrl("https://newsapi.org/v2/")
+                   // .baseUrl("https://newsapi.org/v2/")
+                    .baseUrl("https://simplifiedcoding.net/demos/")
                     //.baseUrl("https://podcast-episodes.p.rapidapi.com/")
 
                     .addConverterFactory(GsonConverterFactory.create())

@@ -39,7 +39,17 @@ import coil.compose.rememberImagePainter
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
 import com.example.example.Articles
+import com.example.example.Hero
 import com.example.jetpackcomposemvvmretrofitandrecyclerview.ui.theme.JetpackComposeMVVMRetrofitAndRecyclerviewTheme
+
+// json
+// API
+// server
+// web service
+// retrofit library in jetpack compose
+// get to get a simple source code that gets data from
+// API and display it in Android app.
+
 
 class MainActivity : ComponentActivity() {
     val mainViewModel by viewModels<MainViewModel>()
@@ -50,10 +60,12 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column() {
-                        Text(text = "Latest NEWS", fontSize = 32.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
 
-                        MovieList(applicationContext, movieList = mainViewModel.movieListResponse)
+
+                        Text(text = "Latest NEWS", fontSize = 32.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                         mainViewModel.getMovieList()
+                       MovieList(applicationContext,
+                           mainViewModel.movieListResponse)
                     }
                 }
             }
@@ -62,26 +74,45 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MovieList(context: Context,movieList: List<Articles>) {
+fun MovieList(context: Context,movieList: List<Hero>) {
     var selectedIndex by remember { mutableStateOf(-1) }
     LazyColumn {
+
         itemsIndexed(items = movieList) {
                 index, item ->
-            MovieItem(context,movie = item, index, selectedIndex)
-            { i ->
+            MovieItem(context,movie = item, index, selectedIndex) { i ->
                 selectedIndex = i
             }
         }
     }
+
 }
 
 @Composable
-fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
+fun MovieItem(context: Context) {
+    val movie = Hero(
+        "Coco",
+        "",
+       " articl"
+    )
+
+
+    MovieItem(context,movie = movie, 0, 0) { i ->
+        Log.i("wertytest123abc", "MovieItem: "
+                +i)
+    }
+}
+
+@Composable
+fun MovieItem(context: Context,movie: Hero, index: Int, selectedIndex: Int,
               onClick: (Int) -> Unit)
 {
-    val backgroundColor = if (index == selectedIndex) MaterialTheme.colors.primary else MaterialTheme.colors.background
 
-    Card(modifier = Modifier
+    val backgroundColor = if (index == selectedIndex) MaterialTheme.colors.primary
+    else MaterialTheme.colors.background
+
+    Card(
+        modifier = Modifier
             .padding(8.dp, 4.dp)
             .fillMaxSize()
             .selectable(true, true, null,
@@ -89,8 +120,8 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
                     Log.i("test123abc", "MovieItem: $index/n$selectedIndex")
                 })
             .clickable { onClick(index) }
-            .height(180.dp), shape = RoundedCornerShape(8.dp), elevation = 4.dp)
-    {
+            .height(180.dp), shape = RoundedCornerShape(8.dp), elevation = 4.dp
+    ) {
         Surface(color = backgroundColor) {
 
             Row(
@@ -102,14 +133,14 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
              {
                 Image(
                     painter = rememberImagePainter(
-                        data = movie.urlToImage,
+                        data = movie.imageurl,
                         builder = {
                             scale(Scale.FILL)
                             placeholder(R.drawable.placeholder)
                             transformations(CircleCropTransformation())
                         }
                     ),
-                    contentDescription = movie.description,
+                    contentDescription = movie.bio,
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(0.3f)
@@ -126,34 +157,29 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
                         .padding(20.dp)
                         .selectable(true, true, null,
                             onClick = {
-                                Log.i("test123abc", "MovieItem: $index/n${movie.description}")
+                                Log.i("test123abc", "MovieItem: $index/n${movie.bio}")
                                 context.startActivity(
                                     Intent(context, DisplayNews::class.java)
                                         .setFlags(FLAG_ACTIVITY_NEW_TASK)
-                                        .putExtra("desk", movie.description.toString())
-                                        .putExtra("urlToImage", movie.urlToImage)
-                                        .putExtra("title", movie.title)
+                                        .putExtra("desk", movie.bio.toString())
+                                        .putExtra("urlToImage", movie.imageurl)
+                                        .putExtra("title", movie.realname)
                                 )
                             })
                 ) {
 
                     Text(
-                        text = movie.title.toString(),
+                        text = movie.realname.toString(),
                         style = MaterialTheme.typography.subtitle1,
                         fontWeight = FontWeight.Bold
                     )
 
-               //     HtmlText(html = movie.description.toString())
+                    HtmlText(html = movie.bio.toString())
                 }
             }
         }
     }
-
-}
-
-/*
-
-/*@Composable
+    @Composable
     fun HtmlText(html: String, modifier: Modifier = Modifier) {
         AndroidView(
             modifier = modifier
@@ -162,8 +188,10 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
             factory = { context -> TextView(context) },
             update = { it.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT) }
         )
-    }*/
+    }
+}
 
+/*
 @Composable
 fun Content() {
     val context = LocalContext.current
