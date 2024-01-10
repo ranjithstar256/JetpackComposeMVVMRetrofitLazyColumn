@@ -52,7 +52,9 @@ import com.example.jetpackcomposemvvmretrofitandrecyclerview.ui.theme.JetpackCom
 
 
 class MainActivity : ComponentActivity() {
+
     val mainViewModel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -60,12 +62,13 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column() {
-                        Text(text = "Latest NEWS", fontSize = 32.sp,
-                            modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                        Text(text = "Latest NEWS", fontSize = 32.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
 
                         mainViewModel.getMovieList()
 
-                        MovieList(applicationContext, mainViewModel.movieListResponse)
+                        Text(text = ""+mainViewModel.result.title+"\n"+mainViewModel.result.completed)
+
+                        //MovieList(applicationContext, mainViewModel.movieListResponse)
                     }
                 }
             }
@@ -74,7 +77,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MovieList(context: Context,movieList: List<Articles>) {
+fun MovieList(context: Context,movieList: List<Hero>) {
 
     var selectedIndex by remember { mutableStateOf(-1) }
 
@@ -90,7 +93,7 @@ fun MovieList(context: Context,movieList: List<Articles>) {
 }
 
 @Composable
-fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
+fun MovieItem(context: Context,movie: Hero, index: Int, selectedIndex: Int,
               onClick: (Int) -> Unit)
 {
 
@@ -118,14 +121,14 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
              {
                 Image(
                     painter = rememberImagePainter(
-                        data = movie.urlToImage,
+                        data = movie.imageurl,
                         builder = {
                             scale(Scale.FILL)
                             placeholder(R.drawable.placeholder)
                             transformations(CircleCropTransformation())
                         }
                     ),
-                    contentDescription = movie.description,
+                    contentDescription = movie.bio,
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(0.3f)
@@ -142,24 +145,24 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
                         .padding(20.dp)
                         .selectable(true, true, null,
                             onClick = {
-                                Log.i("test123abc", "MovieItem: $index/n${movie.description}")
+                                Log.i("test123abc", "MovieItem: $index/n${movie.bio}")
                                 context.startActivity(
                                     Intent(context, DisplayNews::class.java)
                                         .setFlags(FLAG_ACTIVITY_NEW_TASK)
-                                        .putExtra("desk", movie.description.toString())
-                                        .putExtra("urlToImage", movie.urlToImage)
-                                        .putExtra("title", movie.title)
+                                        .putExtra("desk", movie.bio.toString())
+                                        .putExtra("urlToImage", movie.imageurl)
+                                        .putExtra("title", movie.name)
                                 )
                             })
                 ) {
 
                     Text(
-                        text = movie.title.toString(),
+                        text = movie.name.toString(),
                         style = MaterialTheme.typography.subtitle1,
                         fontWeight = FontWeight.Bold
                     )
 
-                    HtmlText(html = movie.description.toString())
+                    HtmlText(html = movie.bio.toString())
                 }
             }
         }

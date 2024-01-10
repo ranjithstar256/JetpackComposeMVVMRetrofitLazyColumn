@@ -1,6 +1,7 @@
 package com.example.jetpackcomposemvvmretrofitandrecyclerview
 
 
+import com.example.example.Hero
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -12,15 +13,33 @@ interface AbcAPIServc {
 
 
 
-    @GET("top-headlines?country=us&category=business&apiKey=684cb893caf7425abeffad82ac1d0f4e")
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   // @GET("top-headlines?country=us&category=business&apiKey=684cb893caf7425abeffad82ac1d0f4e")
     ///@GET("search?q=chatgpt")
     //https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=684cb893caf7425abeffad82ac1d0f4e
-   // @GET("marvel")
 
-
-    suspend fun getMovies() : News
+    //@GET("marvel")
+    @GET("todos/1")
+    suspend fun getMovies() : KLOCAPI
 
     companion object {
         var apiService: AbcAPIServc? = null
@@ -28,7 +47,8 @@ interface AbcAPIServc {
             if (apiService == null) {
                 apiService = Retrofit.Builder()
                    // .baseUrl("https://howtodoandroid.com/apis/")
-                    .baseUrl("https://newsapi.org/v2/")
+                   // .baseUrl("https://newsapi.org/v2/")
+                    .baseUrl("https://jsonplaceholder.typicode.com/")
                    // .baseUrl("https://simplifiedcoding.net/demos/")
                     //.baseUrl("https://podcast-episodes.p.rapidapi.com/")
 
