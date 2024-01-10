@@ -60,11 +60,12 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column() {
+                        Text(text = "Latest NEWS", fontSize = 32.sp,
+                            modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
 
-
-                        Text(text = "Latest NEWS", fontSize = 32.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                         mainViewModel.getMovieList()
-                       MovieList(applicationContext, mainViewModel.movieListResponse)
+
+                        MovieList(applicationContext, mainViewModel.movieListResponse)
                     }
                 }
             }
@@ -74,9 +75,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MovieList(context: Context,movieList: List<Articles>) {
-    var selectedIndex by remember { mutableStateOf(-1) }
-    LazyColumn {
 
+    var selectedIndex by remember { mutableStateOf(-1) }
+
+    LazyColumn {
         itemsIndexed(items = movieList) {
                 index, item ->
             MovieItem(context,movie = item, index, selectedIndex) { i ->
@@ -85,22 +87,6 @@ fun MovieList(context: Context,movieList: List<Articles>) {
         }
     }
 
-}
-
-@Composable
-fun MovieItem(context: Context) {
-    val movie = Articles(
-        "Coco",
-        "",
-       " articl"
-    )
-
-
-    MovieItem(context,movie = movie, 0, 0) {
-            i ->
-        Log.i("wertytest123abc", "MovieItem: "
-                +i)
-    }
 }
 
 @Composable
@@ -120,15 +106,14 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
                     Log.i("test123abc", "MovieItem: $index/n$selectedIndex")
                 })
             .clickable { onClick(index) }
-            .height(180.dp), shape = RoundedCornerShape(8.dp), elevation = 4.dp
+            .height(180.dp), shape = RoundedCornerShape(8.dp),
+        elevation = 4.dp
     ) {
         Surface(color = backgroundColor) {
-
             Row(
                 Modifier
                     .padding(4.dp)
                     .fillMaxSize()
-
             )
              {
                 Image(
@@ -179,17 +164,19 @@ fun MovieItem(context: Context,movie: Articles, index: Int, selectedIndex: Int,
             }
         }
     }
-    @Composable
-    fun HtmlText(html: String, modifier: Modifier = Modifier) {
-        AndroidView(
-            modifier = modifier
-                .fillMaxSize()
-                .size(33.dp),
-            factory = { context -> TextView(context) },
-            update = { it.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT) }
-        )
-    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 @Composable
